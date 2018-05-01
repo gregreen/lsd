@@ -126,7 +126,7 @@ def add_arg_parsers(subparsers):
     parser.add_argument('table', help='Name of the table into which to import', type=str)
     parser.add_argument('file', help='One or more fits files. If ending in .gz or .bz2, they are assumed to be compressed.', type=str, nargs='+')
     parser.add_argument('-c', '--cols', help='Comma separated list of <colname>:<file_column>, where <file_column> is the name of the column in the FITS file that is to be loaded into <colname>.', type=str)
-	parser.add_argument('--cols-file', help='A file with two, whitespace delimited columns, <colname> <file_column>, having the same meaning as arguments to --cols', type=str)
+    parser.add_argument('--cols-file', help='A file with two, whitespace delimited columns, <colname> <file_column>, having the same meaning as arguments to --cols', type=str)
     parser.add_argument('--import-primary-key', help='The input files contain the primary key values. Load these instead of automatically asigning new ones.', default=False, action='store_true')
     parser.add_argument('--set', help='Comma separated list of <colname>=<value>, giving the values to which the specified columns are to be set. The columns given here must not appear in argument to --cols.', default=[], type=csv_list)
     parser.add_argument('--hdus', help="Comma separated list of HDU names (or HDU indices) to import. The values are interpreted as a HDU names, unless they start with a '#', in which case they're interpreted as an index (e.g., #1 refers to the first HDU after the primary one).", default=['#1'], type=csv_list)
