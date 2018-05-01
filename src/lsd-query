@@ -37,7 +37,7 @@ def T(*args):
         return intervalset(tuple(args))
 
 def usage():
-    print "Usage: %s --version --db=dbdir --define='funcname=pycode' --bounds=bounds --format=[fits|text|null] --output=[output,fits] --testbounds=True|False --quiet <query>" % sys.argv[0]
+    print "Usage: %s --version --db=dbdir --define='funcname=pycode' --bounds=bounds --format=[fits|text|hdf5|null] --output=[output,fits] --testbounds=True|False --quiet <query>" % sys.argv[0]
 
 if __name__ == "__main__":
     np.seterr(over='raise')
@@ -59,7 +59,7 @@ if __name__ == "__main__":
         if o in ('-b', '--bounds'):
             bounds.extend(eval('[' + a + ']'))
         if o in ('--format', '-f'):
-            if a not in ['text', 'fits', 'null']: usage(); exit(-1);
+            if a not in ['text', 'fits', 'hdf5', 'null']: usage(); exit(-1);
             format = a
         if o in ('--output', '-o'):
             output = a
@@ -146,6 +146,9 @@ if __name__ == "__main__":
             # HDF5 output
             rows = q.fetch(bounds, progress_callback=progress_callback, testbounds=testbounds, include_cached=include_cached)
             nrows += len(rows)
+            
+            if output is None:
+                output = 'output.hdf5'
             
             with h5py.File(output, 'w') as f:
                 dset = f.create_dataset(
