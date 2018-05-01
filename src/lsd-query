@@ -142,6 +142,20 @@ if __name__ == "__main__":
             pyfits.writeto(output, rows)
 
             print >> sys.stderr, 'Output in %s' % (output)
+        elif format == 'hdf5':
+            # HDF5 output
+            rows = q.fetch(bounds, progress_callback=progress_callback, testbounds=testbounds, include_cached=include_cached)
+            nrows += len(rows)
+            
+            with h5py.File(output, 'w') as f:
+                dset = f.create_dataset(
+                    'query_result',
+                    data=rows.as_ndarray(),
+                    chunks=True,
+                    compression='gzip',
+                    compression_opts=3)
+            
+            print >> sys.stderr, 'Output in {:s}'.format(output)
 
         if db.in_transaction():
             db.commit()
