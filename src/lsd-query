@@ -9,6 +9,8 @@ try:
 except ImportError:
     import pyfits
 
+import tables
+
 import lsd as lsd
 import lsd.pool2 as pool2
 import logging
@@ -150,13 +152,15 @@ if __name__ == "__main__":
             if output is None:
                 output = 'output.hdf5'
             
-            with h5py.File(output, 'w') as f:
-                dset = f.create_dataset(
-                    'query_result',
-                    data=rows.as_ndarray(),
-                    chunks=True,
-                    compression='gzip',
-                    compression_opts=3)
+            with tables.open_file(output, 'w') as f:
+                filters = tables.Filters(
+                    complevel=3,
+                    shuffle=False,
+                    fletcher32=False)
+                f.create_table(
+                    '/', 'query_result',
+                    obj=rows.as_ndarray(),
+                    filters=filters)
             
             print >> sys.stderr, 'Output in {:s}'.format(output)
 
