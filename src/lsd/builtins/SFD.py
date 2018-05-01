@@ -76,7 +76,7 @@ class DustMap(object):
                     m = ()
                 header, data = self.data[pole]
                 wcs = pywcs.WCS(header)
-                x, y = wcs.wcs_sky2pix(l[m], b[m], 0)
+                x, y = wcs.wcs_world2pix(l[m], b[m], 0)
                 out[m] = map_coordinates(data, [y, x], order=order)
 
         return out
