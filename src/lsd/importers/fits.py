@@ -29,7 +29,7 @@ class FITSImporter:
                 rr = np.empty(len(data), dtype=self.dtype)
                 for dbname, fitsname in self.usecols:
                     rr[dbname] = data.field(fitsname)
-                    rows = np.append(rows, rr) if rows is not None else rr
+                rows = np.append(rows, rr) if rows is not None else rr
         finally:
             hdus.close()
 
@@ -71,7 +71,7 @@ def get_importer(db, args):
         setcols[name] = (dtype, dtype.type(val))
 
 	# Slurp the columns from file
-	if args.cols_file is not None:
+    if args.cols_file is not None:
 		if args.cols is not None:
 			raise Exception("Cannot specify both --cols and --cols-file")
 		with open(args.cols_file) as fp:
@@ -99,12 +99,12 @@ def get_importer(db, args):
             usecols.append((dbname, fitsname))
         dtype = table.dtype_for([ name for (name, _) in usecols])
 
-        # HDUs
-        hdus = []
-        for hdu_name in args.hdus:
-            if hdu_name[0] == '#':
-                hdu_name = int(hdu_name[1:])
-            hdus.append(hdu_name)
+    # HDUs
+    hdus = []
+    for hdu_name in args.hdus:
+        if hdu_name[0] == '#':
+            hdu_name = int(hdu_name[1:])
+        hdus.append(hdu_name)
 
     # Create a FITS importer
     ldr = FITSImporter(db, args.table, usecols, dtype, setcols=setcols, hdus=hdus)
